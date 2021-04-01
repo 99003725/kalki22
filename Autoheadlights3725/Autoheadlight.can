@@ -1,0 +1,76 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+  message lights_on_off lof;
+  message Auto_on aton;
+  //msTimer timer1;
+  double var=0;
+  double i;
+ }
+
+/*on key 'o'
+ {
+  lof.lights_on_off=0;
+  output(lof);
+}
+on key 'l'
+{
+  lof.lights_on_off=1;
+  output(lof);
+}
+on key 'h'
+{
+  lof.lights_on_off=2;
+  output(lof); 
+}*/
+
+on sysvar headlights::lightsonoff
+{
+  lof.lights_on_off=@headlights::lightsonoff;
+  output(lof);
+}
+on sysvar onautomode::onoffauto
+{
+  aton.auto_on=@onautomode::onoffauto;
+  output(aton);
+}
+on key 'i'
+{
+  var=var+0.5;
+  output(aton);
+}
+on key 'd'
+{
+  var=var-0.5;
+  output(aton);
+}
+//on timer timer1
+//{
+ // setTimer(timer1,100);
+  
+//}
+on message Auto_on
+{  
+  aton.auto_on=@onautomode::onoffauto;
+  if(var<= 1.6 && aton.auto_on==1 )
+  {
+     lof.lights_on_off=0;
+     
+  }
+  else if((var>1.7 && var<5.5)&& aton.auto_on==1 )
+  {
+    lof.lights_on_off=1;
+   
+  }
+  else if(var>=5.5 && aton.auto_on==1)
+  {
+   lof.lights_on_off=2;
+    }
+  output(lof);
+}
+
